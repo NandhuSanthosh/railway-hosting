@@ -37,6 +37,7 @@ app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
 app.use(methodOverride("_method"));
 
+
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 
