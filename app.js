@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -12,17 +12,23 @@ import { checkForAuthenticationCookie } from "./middlewares/auth.js";
 import Blog from "./model/blog.js";
 import methodOverride from "method-override";
 
-
 const app = express();
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3000;
+const MONGO_URL = process.env.MONGO_URL;
 
-mongoose.connect(process.env.MONGO_URL).then((e) => {
-  console.log("mongodb connected");
-});
+mongoose
+  .connect(MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+  })
+  .then((e) => {
+    console.log("mongodb connected");
+  });
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -41,10 +47,10 @@ app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 
 app.get("/", async (req, res) => {
-    const allBlogs = await Blog.find({})
-      .sort({ createdAt: -1 })
-      .populate("createdBy");
-    res.render("home", { user: req.user, blogs: allBlogs });
+  const allBlogs = await Blog.find({})
+    .sort({ createdAt: -1 })
+    .populate("createdBy");
+  res.render("home", { user: req.user, blogs: allBlogs });
 });
 
 app.listen(PORT, () => {
