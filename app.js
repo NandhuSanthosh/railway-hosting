@@ -22,8 +22,6 @@ const MONGO_URL = process.env.MONGO_URL;
 
 mongoose
   .connect(MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
     ssl: true,
   })
   .then((e) => {
@@ -42,6 +40,7 @@ app.use(nocache());
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
 app.use(methodOverride("_method"));
+app.use(express.json());
 
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
