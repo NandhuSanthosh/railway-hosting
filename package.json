@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "npm install --omit=dev",
+    "build": "NODE_ENV=production npm install --omit=dev",
     "start": "node app.js"
   },
   "type": "module",
